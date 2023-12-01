@@ -19,6 +19,7 @@ def first_digit(s):
 				if item.isdigit():
 						return item
 
+
 def real_first_digit(s):
 		min_index = 1e9
 		value = None
@@ -30,10 +31,12 @@ def real_first_digit(s):
 						value = d
 		return mapping[value]
 
+
 def last_digit(s):
 		for item in reversed(s):
 				if item.isdigit():
 						return item
+
 
 def real_last_digit(s):
 		for i in range(1, len(s) + 1):
@@ -42,11 +45,14 @@ def real_last_digit(s):
 					if index != -1:
 							return mapping[d]
 
+
 def get_calibration_value(s):
 		return int(first_digit(s) + last_digit(s))
 
+
 def get_real_calibration_value(s):
 		return int(real_first_digit(s) + real_last_digit(s))
+
 
 def p1(filename):
 		total = 0
@@ -55,12 +61,14 @@ def p1(filename):
 						total += get_calibration_value(line)
 		return total
 
+
 def p2(filename):
 		total = 0
 		with open(filename) as f:
 				for line in f:
 						total += get_real_calibration_value(line)
 		return total
+
 
 if __name__ == '__main__':
 		print(f"p1: {p1('input.txt')}")
