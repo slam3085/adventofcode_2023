@@ -10,8 +10,13 @@ mapping = {
 	"nine": "9",
 }
 
+reversed_mapping = {
+	''.join(reversed(k)): v for k, v in mapping.items()
+}
+
 for i in range(1, 10):
 		mapping[str(i)] = str(i)
+		reversed_mapping[str(i)] = str(i)
 
 
 def first_digit(s):
@@ -39,11 +44,16 @@ def last_digit(s):
 
 
 def real_last_digit(s):
-		for i in range(1, len(s) + 1):
-			for d in mapping.keys():
-					index = s[-i:].find(d)
-					if index != -1:
-							return mapping[d]
+		min_index = 1e9
+		value = None
+		s = ''.join(reversed(s))
+
+		for d in reversed_mapping.keys():
+				index = s.find(d)
+				if index != -1 and index < min_index:
+						min_index = index
+						value = d
+		return reversed_mapping[value]
 
 
 def get_calibration_value(s):
