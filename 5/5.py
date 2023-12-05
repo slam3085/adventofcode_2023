@@ -49,6 +49,8 @@ def find_intersection(c_start, c_range_length, source_range_start, range_length)
 		return None
 
 
+
+
 def apply_map_2(current, _map):
 	res = []
 	for c_start, c_range_length in current:
@@ -59,6 +61,7 @@ def apply_map_2(current, _map):
 			intersection = find_intersection(c_start, c_range_length, source_range_start, range_length)
 			if intersection:
 				intersection_start, intersection_range_length = intersection
+				# add appendix if it exists
 				if intersection_start != c_start:
 					transformed_start = c_start
 					transformed_range_length = intersection_start - c_start
@@ -66,11 +69,13 @@ def apply_map_2(current, _map):
 						transformed.append((transformed_start, transformed_range_length))
 						c_start += transformed_range_length
 						c_range_length -= transformed_range_length
+				# add mapped intersection
 				transformed_start = dest_range_start + c_start - source_range_start
 				transformed_range_length = intersection_range_length
 				transformed.append((transformed_start, transformed_range_length))
 				c_start += intersection_range_length
 				c_range_length -= intersection_range_length
+		# add appendix if it exists
 		if c_range_length > 0:
 			transformed.append((c_start, c_range_length))
 		res += transformed
