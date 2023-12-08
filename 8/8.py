@@ -46,28 +46,33 @@ def p1(filename):
 def p2(filename):
 	instructions, nodes = read_instructions_nodes(filename)
 	current = [nodes[n] for n in nodes if nodes[n].value.endswith('A')]
-	z_reached = {i: [] for i in range(len(current))}
+	z_reached = {i: None for i in range(len(current))}
 	steps = 0
 	for dir in itertools.cycle(instructions):
 		# check
 		for i, c in enumerate(current):
-			if c.value.endswith('Z'):
-				z_reached[i].append(steps)
+			if c.value.endswith('Z') and z_reached[i] == None:
+				z_reached[i] = steps
 		# iterate
 		steps += 1
-
 		if dir == 'L':
 			current = [nodes[c.left] for c in current]
 		if dir == 'R':
 			current = [nodes[c.right] for c in current]
-		if steps > 1e5:
-			break
-	res = int(z_reached[0][0] * z_reached[1][0] / gcd(z_reached[0][0], z_reached[1][0]))
-	for i in range(2, len(current)):
-		res = int(res * z_reached[i][0] / gcd(res, z_reached[i][0]))
+		# check if all periods available
+			n_periods = 0
+			for v in z_reached.values():
+				if v != None:
+					n_periods += 1
+			if n_periods == len(current):
+				break
+	# find LCM of periods
+	res = 1
+	for i in range(len(current)):
+		res = int(res * z_reached[i] / gcd(res, z_reached[i]))
 	return res
 
 
 if __name__ == '__main__':
-	# print(f"p1: {p1('input.txt')}")
+	print(f"p1: {p1('input.txt')}")
 	print(f"p2: {p2('input.txt')}")
